@@ -1,0 +1,2 @@
+#!/bin/bash
+echo -e "mkdir \$1/$2" >> $1

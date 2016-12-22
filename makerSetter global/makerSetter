@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mkdir $1
+touch $1/$1.sh
+echo -e "#!/bin/bash" >> $1/$1.sh
+echo -e "mkdir \$1" >> $1/$1.sh
+
+pathSender $2 $2 $1/$1.sh

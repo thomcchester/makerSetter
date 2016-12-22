@@ -1,0 +1,33 @@
+#!/bin/bash
+nameVar=$1
+scriptVar=${nameVar##*/}
+outVar=${nameVar%/$scriptVar}
+echo $nameVar $scriptVar $outVar
+echo $2 $3
+shortName=$2
+shortNameUnderscore=$(echo $shortName | sed -e 's/\//_/g')
+echo $shortNameUnderscore
+shortNameLast=${shortName##*/}
+shortNameFirst=${shortName%/$shortNameLast}
+echo $shortNameFirst
+cp $3 $outVar/$shortNameUnderscore
+echo -e "cp $shortNameUnderscore \$1/$shortName" >> $1
+
+
+
+# echo -e "touch \$1/$2" >> $1
+
+# file1=$1
+# file2=${file1##*/}
+# file3=${file1%/$file2}
+# forWriteInit="$2"
+# forWrite=$(echo $forWriteInit | sed -e 's/\//-/g')
+# touch $file3/$forWrite
+# echo -e "$forWrite=\$(echo \$$forWrite | sed -e 's/-/\//g')" >> $1
+# #
+# #
+# touch $file3/$forWriteEnd
+#
+# contents=`cat $3`
+#
+# echo -e "$contents" >> $file3/$forWriteEnd

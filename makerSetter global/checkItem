@@ -1,0 +1,15 @@
+#!/bin/bash
+hold=$1
+holder=${hold##*/}
+abshold=${holder#/}
+
+if [[ $holder = "node_modules" ]];then
+  echo "node_module, nothing done"
+elif [[ -d $1 ]];then
+  makeDir $4 $2
+  pathSender $1 $3 $4
+elif [[ -f $1 ]];then
+  makeFile $4 $2 $1
+else
+  echo "unknown, check your self"
+fi

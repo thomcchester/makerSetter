@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for file in $1/*; do
+  hold=$2
+  holder=${file#$hold}
+  holderer=${holder:1:${#holder}}
+  checkItem ${file} $holderer $2 $3
+done
