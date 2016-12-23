@@ -1,6 +1,15 @@
 #!/usr/bin/env node
 var program=require('commander');
 var fs = require('fs');
+var path=require('path')
+var homedir= require('homedir')
+
+
+
+//made vars
+home=homedir();
+
+
 //making sure it is worth doing anything else.
 program
   .version('0.0.1')
@@ -42,26 +51,47 @@ var makeFile= function(filepath){
 var textAdder= function(path, contents){
   fs.appendFileSync(path, contents);
 }
+  //set reader to variable, set var=fileContents(path) for complete thing
+var fileContents= function(path){
+  newVar=fs.readFileSync(home+path, "utf-8", function(err, data){
+    if (err){
+      console.log(err)
+    } else {
+      return data
+    }
+  })
+  return newVar
+}
 
+//make out directory
 outMostDir="./"+program.name
 indexjs=outMostDir+"/index.js"
 contents="#!/usr/bin/env node"
-console.log(indexjs)
-console.log(contents)
-
-
 makeDirectory(outMostDir)
 makeFile(indexjs)
 textAdder(indexjs, contents)
 
-commanderFs = "\nvar program = require('commander');\nvar fs = require('fs')"
+//making variables to be added to index.js in the -n directory
+  //putting requirements in
+  commanderFs = "\nvar program = require('commander');\nvar fs = require('fs')"
+  //setting commander program
+  programText= "\n\n program\n\t.version('0.0.1')\n\t.option('-n, --name [type]','put in name [madeProg]', 'madeProg')\n\t.parse(process.argv);"
+  //if no name input
+  programNameIf= "\n\n if (!program.name){\n\t\t console.log(\"since you didnt give a name we set it as: madeProg\")\n\t}else{\n\t\tconsole.log(\"Your new Program Writer is called: \", program.name)\n\t}"
+  //makes the make "makeDirectory" function
+  makeDirectoryText="\n\nvar makeDirectory= function(dirpath){\n\tif(!fs.existsSync(dirpath)){\n\t\tfs.mkdirSync(dirpath)\n\t}\n}"
 
-programText= "\n\n program\n\t.version('0.0.1')\n\t.option('-n, --name [type]','put in name [madeProg]', 'madeProg')\n\t.parse(process.argv);"
+//creates outermost path of files copied
+absPath=home+program.path
+console.log(absPath)
+fs.readdir(absPath, (err,files)=>{
+  console.log(absPath)
+  files.forEach(file=>{
+    console.log(file)
+  })
+})
 
-programNameIf= "\n\n if (!program.name){\n\t\t console.log(\"since you didnt give a name we set it as: madeProg\")\n\t}else{\n\t\tconsole.log(\"Your new Program Writer is called: \", program.name)\n\t}"
-
-makeDirectoryText="\n\nvar makeDirectory= function(dirpath){\n\tif(!fs.existsSync(dirpath)){\n\t\tfs.mkdirSync(dirpath)\n\t}\n}"
-
+//actually adding the text
 textAdder(indexjs, commanderFs)
 textAdder(indexjs, programText)
 textAdder(indexjs, programNameIf)
